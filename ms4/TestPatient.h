@@ -3,7 +3,7 @@
 #include "Patient.h"
 namespace seneca {
 	class TestPatient : public Patient {
-
+		//Test push
 	};
 }
 #endif
