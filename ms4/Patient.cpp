@@ -88,6 +88,8 @@ namespace seneca {
 				ostr.fill(' ');
 				ostr << m_ticket.number();
 				ostr << " " << m_ticket.time();
+				ostr.unsetf(std::ios::right);
+
 			}
 			else {
 				ostr << "Invalid Patient Record" << std::endl;
