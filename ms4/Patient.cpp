@@ -35,7 +35,7 @@ namespace seneca {
 		}
 		return *this;
 	}
-	Patient::Patient(const Patient& other) : m_ticket(other.m_ticket) { //
+	Patient::Patient(const Patient& other) : m_ticket(other.m_ticket) { 
 		setMembers(other);
 	}
 	Patient::~Patient() {

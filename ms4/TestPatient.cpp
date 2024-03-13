@@ -1,3 +1,16 @@
+/* Citation and Sources...
+Final Project Milestone 4
+Module: TestPatient
+Filename: TestPatient.cpp
+Version 1.0
+Student Name: Joon Dong
+Student ID:	036262152
+Student Email: thdong1@myseneca.ca
+-----------------------------------------------------------
+I have done all the coding by myself and only copied the code
+that my professor provided to complete my workshops and assignments.
+-----------------------------------------------------------
+*/
 #include "TestPatient.h"
 namespace seneca {
 
