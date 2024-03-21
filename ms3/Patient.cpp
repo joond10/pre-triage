@@ -14,9 +14,10 @@ that my professor provided to complete my workshops and assignments.
 #define _CRT_SECURE_NO_WARNINGS
 #include "Patient.h"
 namespace seneca {
-	Patient::Patient(int ticketNum) : 
-		m_ticket(ticketNum), m_name(nullptr), m_ohip(0) {
+	Patient::Patient(int ticketNum) :
+		m_name(nullptr), m_ohip(0), m_ticket(ticketNum) {
 	}
+
 	void Patient::setMembers(const Patient& other) {
 		if (other.m_name) {
 			m_name = new char[50 + 1];

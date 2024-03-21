@@ -18,8 +18,8 @@ that my professor provided to complete my workshops and assignments.
 namespace seneca {
 	//Abstract base class that inherits an IOAble
 	class Patient : public IOAble {
-		char* m_name;
-		int m_ohip;
+		char* m_name = nullptr;
+		int m_ohip{};
 		Ticket m_ticket;
 	public:
 		Patient(int ticketNum);
