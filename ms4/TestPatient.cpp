@@ -23,15 +23,6 @@ namespace seneca {
 	char TestPatient::type() const{
 		return 'C';
 	}
-	std::ostream& TestPatient::csvWrite(std::ostream& ostr) const {
-		Patient::write(ostr);
-		return ostr;
-	}
-	std::istream& TestPatient::csvRead(std::istream& istr) {
-		Patient::read(istr);
-		nextTestTicket = number() + 1;
-		return istr;
-	}
 	std::ostream& TestPatient::write(std::ostream& ostr) const {
 		if (&ostr == &std::cout) {
 			ostr << "Contagion TEST" << std::endl;

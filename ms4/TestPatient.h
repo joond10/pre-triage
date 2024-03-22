@@ -22,8 +22,6 @@ namespace seneca {
 	public:
 		TestPatient();
 		char type() const;
-		std::ostream& csvWrite(std::ostream& ostr) const;
-		std::istream& csvRead(std::istream& istr);
 		std::ostream& write(std::ostream& ostr) const;
 		std::istream& read(std::istream& istr);
 
