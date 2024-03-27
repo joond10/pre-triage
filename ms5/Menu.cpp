@@ -73,7 +73,7 @@ namespace seneca {
 		//Call display function
 		display();
 		//Use foolproof int functions
-		Selection = getInt(0,2);
+		Selection = getInt(0,3);
 		return Selection;
 	}
 	int Menu::getInt() {

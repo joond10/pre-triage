@@ -63,10 +63,11 @@ namespace seneca {
 		const char* title = "General Healthcare Facility Pre-Triage Application\n"
 			"1- Register\n2- Admit\n3- View Lineup";
 		Menu menu(title, 0);
-		while (menu >> selection && !selection) {
+		while (menu >> selection) {
 			switch (selection) {
 			case 1: {
-				reg();
+				save();
+				//reg();
 				break;
 			}
 			case 2:
@@ -76,7 +77,7 @@ namespace seneca {
 				lineup();
 				break;
 			case 0:
-				save();
+				//save();
 				selection = 0;
 				break;
 			}
@@ -93,7 +94,22 @@ namespace seneca {
 		return 0;
 	}
 	void PreTriage::save() {
+		int contagionType{};
+		int triageType{};
+		std::ofstream file;
 
+		file.open(m_fileName);
+		std::cout << "Saving lineup..." << std::endl;
+		file << m_averageContagionWait << "," << m_averageTriageWait << std::endl;
+		for (int i = 0; i < m_noOfPatients; i++) {
+			file << m_lineup[i] << std::endl;
+			if (m_lineup[i]->type() == 'C') {
+				contagionType++;
+			}
+			else {
+				triageType++;
+			}
+		}
 	}
 	void PreTriage::reg() {
 
