@@ -66,8 +66,8 @@ namespace seneca {
 		while (menu >> selection) {
 			switch (selection) {
 			case 1: {
-				save();
-				//reg();
+				//save();
+				reg();
 				break;
 			}
 			case 2:
@@ -77,12 +77,11 @@ namespace seneca {
 				lineup();
 				break;
 			case 0:
-				//save();
+				save();
 				selection = 0;
 				break;
 			}
 		}
-
 	}
 	const Time PreTriage::getWaitTime(const Patient& patient) const {
 		return 0;
@@ -102,13 +101,7 @@ namespace seneca {
 		std::cout << "Saving lineup..." << std::endl;
 		file << m_averageContagionWait << "," << m_averageTriageWait << std::endl;
 		for (int i = 0; i < m_noOfPatients; i++) {
-			file << m_lineup[i] << std::endl;
-			if (m_lineup[i]->type() == 'C') {
-				contagionType++;
-			}
-			else {
-				triageType++;
-			}
+			file << *m_lineup[i] << std::endl;
 		}
 	}
 	void PreTriage::reg() {
