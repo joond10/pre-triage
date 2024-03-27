@@ -51,11 +51,11 @@ void sixteenPatients() {
    P.run();
 }
 int main() {
-   remove("emptyfile.csv");
-   noFile();
-   displayFile("emptyfile.csv");
-   emptyFile();
-   displayFile("emptyfile.csv");
+   //remove("emptyfile.csv");
+   //noFile();
+   //displayFile("emptyfile.csv");
+   //emptyFile();
+   //displayFile("emptyfile.csv");
    sixteenPatients();
    displayFile("smalldata.csv");
    remove("emptyfile.csv");

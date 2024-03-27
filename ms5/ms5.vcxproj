@@ -139,23 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ms51_test.cpp" />
+    <ClCompile Include="PreTriage.cpp" />
     <ClCompile Include="TestPatient.cpp" />
     <ClCompile Include="IOAble.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Patient.cpp" />
-    <ClCompile Include="PreTriage.cpp" />
     <ClCompile Include="Ticket.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="TriagePatient.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PreTriage.h" />
     <ClInclude Include="TestPatient.h" />
     <ClInclude Include="IOAble.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Patient.h" />
-    <ClInclude Include="PreTriage.h" />
     <ClInclude Include="Ticket.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="TriagePatient.h" />
