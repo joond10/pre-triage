@@ -1,8 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "PreTriage.h"
 namespace seneca {
-
-
+	
 	PreTriage::PreTriage(const char* fileName) :
 		m_averageContagionWait(15), m_averageTriageWait(5) {
 		m_fileName = new char[strlen(fileName) + 1];
@@ -17,34 +16,36 @@ namespace seneca {
 		//Temporary type of local patient
 		char localPatientType;
 
-		//Read in the average wait time of the data file
 		std::cout << "Loading data..." << std::endl;
 		file.open(m_fileName);
 		file >> m_averageContagionWait;
-		file.ignore(1000, ',');
-		file >> m_averageTriageWait;
-		file.ignore(1000, '\n');
+		//If the insertion is successful, we continue to keep reading data
+		if (file) {
+			file.ignore(1000, ',');
+			file >> m_averageTriageWait;
+			file.ignore(1000, '\n');
 
-		//Read up until 100 patients or up until there's nothing left to read
-		for (int i = 0; i < MAX_PATIENTS && !file.eof(); i++) {
-			file >> localPatientType;
-			//Ignore newline
-			file.ignore();
-			//Depending on the patient type, instantiate respective patient
-			if (localPatientType == 'C') {
-				localPatient = new TestPatient();
-			}
-			else if (localPatientType == 'T') {
-				localPatient = new TriagePatient();
-			}
-			//If instnatiation successful, add to our lineup and increment number in lineup
-			if (localPatient != nullptr && !file.eof()) {
-				file >> *localPatient;
-				m_lineup[i] = localPatient;
-				m_noOfPatients++;
+			//Read up until 100 patients or up until there's nothing left to read
+			for (int i = 0; i < MAX_PATIENTS && !file.eof(); i++) {
+				file >> localPatientType;
+				//Ignore newline
+				file.ignore();
+				//Depending on the patient type, instantiate respective patient
+				if (localPatientType == 'C') {
+					localPatient = new TestPatient();
+				}
+				else if (localPatientType == 'T') {
+					localPatient = new TriagePatient();
+				}
+				//If instantiation successful, add to our lineup and increment number in lineup
+				if (localPatient != nullptr && !file.eof()) {
+					file >> *localPatient;
+					m_lineup[i] = localPatient;
+					m_noOfPatients++;
+				}
 			}
 		}
-		if (!file.eof()) {
+		if (file.peek() != EOF) {
 			std::cout << "Warning: number of records exceeded " << MAX_PATIENTS << std::endl;
 			std::cout << m_noOfPatients << " Records imported..." << std::endl;
 		}
@@ -52,8 +53,9 @@ namespace seneca {
 			std::cout << m_noOfPatients << " Records imported..." << std::endl;
 		}
 		else {
-			std::cout << "No data or bad data file" << std::endl;
+			std::cout << "No data or bad data file!" << std::endl;
 		}
+		std::cout << std::endl;
 	}
 	PreTriage::~PreTriage() {
 
@@ -63,10 +65,10 @@ namespace seneca {
 		const char* title = "General Healthcare Facility Pre-Triage Application\n"
 			"1- Register\n2- Admit\n3- View Lineup";
 		Menu menu(title, 0);
-		while (menu >> selection) {
+		do {
+			menu >> selection;
 			switch (selection) {
 			case 1: {
-				//save();
 				reg();
 				break;
 			}
@@ -78,10 +80,9 @@ namespace seneca {
 				break;
 			case 0:
 				save();
-				selection = 0;
 				break;
 			}
-		}
+		} while (selection);
 	}
 	const Time PreTriage::getWaitTime(const Patient& patient) const {
 		return 0;
@@ -102,7 +103,14 @@ namespace seneca {
 		file << m_averageContagionWait << "," << m_averageTriageWait << std::endl;
 		for (int i = 0; i < m_noOfPatients; i++) {
 			file << *m_lineup[i] << std::endl;
+			if (m_lineup[i]->type() == 'C') {
+				contagionType++;
+			}
+			else {
+				triageType++;
+			}
 		}
+		std::cout << contagionType << " Contagion Tests and " << triageType << " Triage records were saved!" << std::endl;
 	}
 	void PreTriage::reg() {
 
