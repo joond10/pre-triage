@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ms51_test.cpp" />
+    <ClCompile Include="ms52_test.cpp" />
     <ClCompile Include="PreTriage.cpp" />
     <ClCompile Include="TestPatient.cpp" />
     <ClCompile Include="IOAble.cpp" />

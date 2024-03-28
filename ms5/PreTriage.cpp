@@ -119,6 +119,51 @@ namespace seneca {
 
 	}
 	void PreTriage::lineup() {
-
-	}
+		int counter = 1;
+		int selection;
+		const char* title = "Select The Lineup\n"
+			"1- Contagion Test\n2- Triage";
+		Menu menu(title, 1);
+			menu >> selection;
+			switch (selection) {
+			case 1: {
+				std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n"
+					"-------------------------------------------------------------------------------" << std::endl;
+				for (int i = 0; i < m_noOfPatients; i++) {
+					if (m_lineup[i]->type() == 'C') {
+						std::cout << counter;
+						counter++;
+						std::cout.width(5);
+						std::cout << "- ";
+						std::clog << *m_lineup[i] << std::endl;
+					}
+				}
+				if (counter == 1) {
+					std::cout << "Line up is empty!\n";
+				}
+				std::cout << "-------------------------------------------------------------------------------" << std::endl;
+				break;
+			}
+			case 2:
+				std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n"
+					"-------------------------------------------------------------------------------" << std::endl;
+				for (int i = 0; i < m_noOfPatients; i++) {
+					if (m_lineup[i]->type() == 'T') {
+						std::cout << counter;
+						counter++;
+						std::cout.width(5);
+						std::cout << "- ";
+						std::clog << *m_lineup[i] << std::endl;
+					}
+				}
+				if (counter == 1) {
+					std::cout << "Line up is empty!\n";
+				}
+				std::cout << "-------------------------------------------------------------------------------" << std::endl;
+				break;
+			default:
+				std::cout << "Shouldn't happen but switch statements stylistically have a default :)";
+				break;
+			}
+	}	
 }
