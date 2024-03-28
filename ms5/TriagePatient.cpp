@@ -23,7 +23,7 @@ namespace seneca {
 	char TriagePatient::type() const {
 		return 'T';
 	}
-
+	//Localize where we dynamically allocate for symptoms
 	void TriagePatient::initalizeSymptoms(const TriagePatient& other) {
 		if (other.m_symptoms) {
 			m_symptoms = new char[512];
@@ -65,9 +65,12 @@ namespace seneca {
 		return ostr;
 	}
 	std::istream& TriagePatient::read(std::istream& istr) {
+		//Local static array to hold symptoms
 		char symptoms[511 + 1];
+		//Delete existing symptoms
 		delete[] m_symptoms;
 		Patient::read(istr);
+		//Reads comma seperated values entry via other istream objects
 		if (&istr != &std::cin) {
 			istr.ignore();
 			istr.getline(symptoms, 511, '\n');
@@ -75,6 +78,7 @@ namespace seneca {
 			strcpy(m_symptoms, symptoms);
 			nextTriageTicket = number() + 1;
 		}
+		//Console entry via cin
 		else {
 			std::cout << "Symptoms: ";
 			istr.getline(symptoms, 511, '\n');

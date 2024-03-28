@@ -18,9 +18,9 @@ namespace seneca {
 
 		std::cout << "Loading data..." << std::endl;
 		file.open(m_fileName);
-		file >> m_averageContagionWait;
-		//If the insertion is successful, we continue to keep reading data
+		//If the file creation is successful and contains data, continue reading
 		if (file) {
+			file >> m_averageContagionWait;
 			file.ignore(1000, ',');
 			file >> m_averageTriageWait;
 			file.ignore(1000, '\n');

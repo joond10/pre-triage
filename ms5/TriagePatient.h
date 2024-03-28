@@ -17,13 +17,14 @@ that my professor provided to complete my workshops and assignments.
 #include "Patient.h"
 namespace seneca {
 	extern int nextTriageTicket;
-
+	//Triage patient that overrides with a concrete implementation
 	class TriagePatient : public Patient {
 		char* m_symptoms;
 	public:
 		TriagePatient();
 		char type() const;
 
+		//Localization technique for the rule of three with symptom memory management
 		void initalizeSymptoms(const TriagePatient&);
 		TriagePatient(const TriagePatient&);
 		TriagePatient& operator=(const TriagePatient&);

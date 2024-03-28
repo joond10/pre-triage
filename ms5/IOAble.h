@@ -15,7 +15,7 @@ that my professor provided to complete my workshops and assignments.
 #define SENECA_IOABLE_H
 #include <iostream>
 namespace seneca {
-	//Interface
+	//Interface - Sets a contract with derived classes to implement these functions
 	class IOAble {
 	public:
 		virtual ~IOAble() = default;

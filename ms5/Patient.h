@@ -18,27 +18,37 @@ that my professor provided to complete my workshops and assignments.
 namespace seneca {
 	//Abstract base class that inherits an IOAble
 	class Patient : public IOAble {
+		//Holds main attributes of a patient to be derived
 		char* m_name;
 		int m_ohip;
 		Ticket m_ticket;
 	public:
+		//Parameterized constructor
 		Patient(int ticketNum);
+		//Localization technique for the rule of three
 		void setMembers(const Patient& other);
 		Patient& operator=(const Patient& other);
 		Patient(const Patient& other);
 		~Patient();
-		//Methods:
-			//Pure virtual to be implemented later
+	//Methods:
+		//Pure virtual to be implemented later, identifies the type of patient
 		virtual char type() const = 0;
+		//Compares the patient with a single character (type)
 		bool operator==(char rhs) const;
+		//Compares the current patient to another patient (type_
 		bool operator==(const Patient& otherPatient) const;
+		//Modifier that sets the patient's ticket to current time
 		void setArrivalTime();
+		//Query that returns the time of the patient's ticket
 		Time time() const;
+		//Query that returns the number associated with patient's ticket
 		int number() const;
-		//Cast Overloads:
+	//Cast Overloads:
+		//Returns true if the patient is in a valid state
 		operator bool() const;
+		//Returns the address of the patient's name
 		operator const char* () const;
-		//Overrides:
+	//Overrides:
 		std::ostream& write(std::ostream& ostr) const;
 		std::istream& read(std::istream& istr);
 	};

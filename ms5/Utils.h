@@ -62,8 +62,25 @@ namespace seneca {
         /// <returns> &gt;0 if s1 &gt; s2  OR  &lt;0 if s1 &lt; s2 OR 0 if s1 = s2</returns>
         int strcmp(const char* s1, const char* s2)const;
 
+        /// <summary>
+        /// fool-proof method to get an integer
+        /// </summary>
+        /// <returns>integer that user entered</returns>
         int getInt();
+        /// <summary>
+        /// fool-proof method to get an integer between a min and max range
+        /// </summary>
+        /// <returns>integer that user entered</returns>
         int getInt(int min, int max);
+
+        template <typename type>
+        void removeDynamicElement(type* array[], int index, int& size) {
+            delete array[index];
+            for (int j = index; j < size; j++) {
+                array[j] = array[j + 1];
+            }
+            size--;
+        }
     };
     /// <summary>
        /// making seneca::debug variable global to all the files

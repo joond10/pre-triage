@@ -15,9 +15,8 @@ that my professor provided to complete my workshops and assignments.
 #define SENECA_TEST_PATIENT_H
 #include "Patient.h"
 namespace seneca {
-
 	extern int nextTestTicket;
-
+	//Contagion test patient that overrides with a concrete implementation
 	class TestPatient : public Patient {
 	public:
 		TestPatient();

@@ -21,8 +21,10 @@ namespace seneca {
 		m_text = new char[strlen(menuContent) + 1]; 
 		strcpy((char*)m_text, menuContent);
 
-		m_options = 1; //There will be an option by default due to exit
+		//Default amount of options is 1 due to exit
+		m_options = 1; 
 		for (int i = 0; m_text[i] != '\0'; ++i) {
+			//A newline indicates another option in the menu
 			if (m_text[i] == '\n') {
 				m_options++;
 			}
@@ -32,7 +34,7 @@ namespace seneca {
 		delete[] m_text;
 	}
 	void Menu::display() const {
-		//If m_tabs was passed in via constructor
+		//If a number of tabs was passed in
 		if (m_tabs > 0) {
 			//An indent is 3 spaces
 			int indentation = m_tabs * 3; 
@@ -40,16 +42,17 @@ namespace seneca {
 			for (int i = 0; i < indentation; i++) {
 				std::cout << " ";
 			}
+			//Display menu content
 			for (int i = 0; m_text[i] != '\0'; i++) {
 				std::cout << m_text[i];
-				//Indent for every new option
+				//Must indent for every new option
 				if (m_text[i] == '\n') {
 					for (int j = 0; j < indentation; j++) {
 						std::cout << " ";
 					}
 				}
 			}
-			//Newline after all optiosn displayed
+			//Newline after all options displayed
 			std::cout << std::endl;
 			//Indent for the exit option
 			for (int i = 0; i < indentation; i++) {
@@ -62,58 +65,18 @@ namespace seneca {
 			}
 			std::cout << "> ";
 		}
-		//Otherwise just print normally
+		//Otherwise just print menu normally if number of tabs not specified
 		else {
 			std::cout << m_text << std::endl;
 			std::cout << "0- Exit" << std::endl;
 			std::cout << "> ";
 		}
 	}
-	int& Menu::operator>>(int& Selection) {
-		//Call display function
+	int& Menu::operator>>(int& selection) {
+		//Display the menu and get input in one go
 		display();
 		//Use foolproof int functions
-		Selection = getInt(0,3);
-		return Selection;
-	}
-	int Menu::getInt() {
-		int value{};
-		bool done{};
-		do {
-			done = false;
-			std::cin >> value;
-			//If cin succeeds meaning an integer was entered
-			if (std::cin) {
-				//If the integer didn't end with newline, fail
-				if (std::cin.get() != '\n') {
-					std::cout << "Only enter an integer, try again: ";
-				}
-				//Otherwise if it did, success
-				else {
-					done = true;
-				}
-			}
-			//If cin failed meaning an integer was not entered
-			else {
-				//Clear and prompt for bad integer
-				std::cin.clear();
-				std::cout << "Bad integer value, try again: ";
-			}
-			//Clear buffer and loop for iput again
-			if (!done) {
-				std::cin.ignore(10000, '\n');
-			}
-		} while (!done);
-	
-		return value;
-	}
-	int Menu::getInt(int min, int max) {
-		int value{};
-		do {
-			value = getInt();
-		} while ((value < min || value > max) &&
-			//Error message only evaluated if value is out of range 
-			std::cout << "Invalid value enterd, retry[" << min << " <= value <= " << max << "]: ");
-		return value;
+		selection = U.getInt(0,3);
+		return selection;
 	}
 }
