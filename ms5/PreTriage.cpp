@@ -161,6 +161,8 @@ namespace seneca {
 				}
 				std::cout << "-------------------------------------------------------------------------------" << std::endl;
 				break;
+			case 0:
+				break;
 			default:
 				std::cout << "Shouldn't happen but switch statements stylistically have a default :)";
 				break;
