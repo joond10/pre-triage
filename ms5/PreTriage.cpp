@@ -87,11 +87,28 @@ namespace seneca {
 	const Time PreTriage::getWaitTime(const Patient& patient) const {
 		return 0;
 	}
+	//Modifier for admittance
 	void PreTriage::setAverageWaitTime(const Patient& patient) {
-
+		Time time;
+		if (patient.type() == 'C') { //Time object here											
+			m_averageContagionWait = ((time.reset() - patient.time()) + (m_averageContagionWait * (patient.number() - 1))) / patient.number();
+		}
+		else {
+			m_averageTriageWait = ((time.reset() - patient.time()) + (m_averageTriageWait * (patient.number() - 1))) / patient.number();
+		}
 	}
+	//Helper for admittance
 	int PreTriage::indexOfFirstInLine(char type) const {
-		return 0;
+		int index = -1;
+		int flag = 0;
+
+		for (int i = 0; i < m_noOfPatients && !flag; i++) {
+			if (m_lineup[i]->type() == type) {
+				index = i;
+				flag = 1;
+			}
+		}
+		return index;
 	}
 	void PreTriage::save() {
 		int contagionType{};
@@ -116,6 +133,37 @@ namespace seneca {
 
 	}
 	void PreTriage::admit() {
+		int selection;
+		const char* title = "Select Type of Admittance:\n1- Contagion Test\n2- Triage";
+		Time t;
+		Menu menu(title, 1);
+		menu >> selection;
+		switch (selection) {
+		case 1: 
+			if (indexOfFirstInLine('C') == -1) {
+				std::cout << "Lineup is empty!\n";
+			} 
+			else {			
+				Time time;
+				std::cout << std::endl;
+				std::cout << "******************************************" << std::endl;
+				std::cout << "Call time [" << time.reset() << "]" << std::endl; 
+				std::cout << "Calling for " << *m_lineup[indexOfFirstInLine('C')]; 
+				std::cout << "******************************************" << std::endl;
+				std::cout << std::endl;
+				setAverageWaitTime(*m_lineup[indexOfFirstInLine('C')]);
+				std::cout << m_averageContagionWait;
+				U.removeDynamicElement(m_lineup, indexOfFirstInLine('C'), m_noOfPatients);
+			}
+			break;
+		case 2:
+			break;
+		case 0:
+			break;
+		default:
+			break;
+		}
+
 
 	}
 	void PreTriage::lineup() {
@@ -134,6 +182,7 @@ namespace seneca {
 						std::cout << counter;
 						counter++;
 						std::cout.width(5);
+						std::cout.fill(' ');
 						std::cout << "- ";
 						std::clog << *m_lineup[i] << std::endl;
 					}
@@ -152,6 +201,7 @@ namespace seneca {
 						std::cout << counter;
 						counter++;
 						std::cout.width(5);
+						std::cout.fill(' ');
 						std::cout << "- ";
 						std::clog << *m_lineup[i] << std::endl;
 					}
