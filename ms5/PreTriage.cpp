@@ -34,15 +34,15 @@ namespace seneca {
 			file.ignore(1000, '\n');
 
 			//Read up until 100 patients or up until there's nothing left to read
-			for (int i = 0; i < MAX_PATIENTS && !file.eof(); i++) {
+			for (int i = 0; i < MAX_PATIENTS && file.peek() != EOF; i++) {
 				file >> localPatientType;
-				//Ignore newline
+				//Ignore comma
 				file.ignore();
 				//Depending on the patient type, instantiate respective patient
 				if (localPatientType == 'C') {
 					localPatient = new TestPatient();
 				}
-				else if (localPatientType == 'T') {
+				else if (localPatientType == 'T') { 
 					localPatient = new TriagePatient();
 				}
 				//If instantiation successful, add to our lineup and increment number in lineup
