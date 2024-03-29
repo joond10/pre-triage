@@ -20,6 +20,7 @@ namespace seneca {
 	class TestPatient : public Patient {
 	public:
 		TestPatient();
+		//Returns the appropriate identifier for the type of patient (contagion)
 		char type() const;
 		std::ostream& write(std::ostream& ostr) const;
 		std::istream& read(std::istream& istr);

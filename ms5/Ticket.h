@@ -19,14 +19,17 @@ that my professor provided to complete my workshops and assignments.
 namespace seneca {
     //Concrete class that inherits an IOAble
     class Ticket :public IOAble {
-        //The time the Ticket was issued
+        //Time the ticket was issued represented in minutes
         Time m_time;
-        //The ticket number; A sequential integer, starting from one and unique for each lineup.
+        //The number associated with a ticket
         int m_number;
     public:
         Ticket(int number);
+        //Query that returns the time on the ticket
         Time time()const;
+        //Query that returns the ticket number
         int number()const;
+        //Sets time to system time
         void resetTime();
         std::ostream& write(std::ostream& ostr)const;
         std::istream& read(std::istream& istr);

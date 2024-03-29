@@ -22,6 +22,7 @@ namespace seneca {
 		char* m_symptoms;
 	public:
 		TriagePatient();
+		//Returns the appropriate identifier for the type of patient (triage)
 		char type() const;
 
 		//Localization technique for the rule of three with symptom memory management

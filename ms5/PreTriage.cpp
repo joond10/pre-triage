@@ -1,13 +1,29 @@
+/* Citation and Sources...
+Final Project Milestone 5
+Module: PreTriage
+Filename: PreTriage.cpp
+Version 1.0
+Student Name: Joon Dong
+Student ID:	036262152
+Student Email: thdong1@myseneca.ca
+-----------------------------------------------------------
+I have done all the coding by myself and only copied the code
+that my professor provided to complete my workshops and assignments.
+-----------------------------------------------------------
+*/
 #define _CRT_SECURE_NO_WARNINGS
 #include "PreTriage.h"
 namespace seneca {
-	
+
+	//Constructor that reads information upon starting program
 	PreTriage::PreTriage(const char* fileName) :
 		m_averageContagionWait(15), m_averageTriageWait(5) {
 		m_fileName = new char[strlen(fileName) + 1];
 		strcpy(m_fileName, fileName);
 		load();
 	}
+
+	//Destructor that saves information upon exiting program
 	PreTriage::~PreTriage() {
 		save();
 		for (int i = 0; i < m_noOfPatients; i++) {
@@ -16,12 +32,10 @@ namespace seneca {
 		delete[] m_fileName;
 	}
 
+	//Reads data from the files provided
 	void PreTriage::load() {
-		//File for file reading operations
 		std::ifstream file;
-		//Temporary local patient
 		Patient* localPatient = nullptr;
-		//Temporary type of local patient
 		char localPatientType;
 
 		std::cout << "Loading data..." << std::endl;
@@ -38,7 +52,7 @@ namespace seneca {
 				file >> localPatientType;
 				//Ignore comma
 				file.ignore();
-				//Depending on the patient type, instantiate respective patient
+				//Depending on the patient type, instantiate respective type of patient
 				if (localPatientType == 'C') {
 					localPatient = new TestPatient();
 				}
@@ -53,6 +67,7 @@ namespace seneca {
 				}
 			}
 		}
+		//Depending on what we read, display appropriate information
 		if (file.peek() != EOF) {
 			std::cout << "Warning: number of records exceeded " << MAX_PATIENTS << std::endl;
 			std::cout << m_noOfPatients << " Records imported..." << std::endl;
@@ -66,6 +81,7 @@ namespace seneca {
 		std::cout << std::endl;
 	}
 
+	//Entry point into the UI of the main menu
 	void PreTriage::run() {
 		int selection;
 		const char* title = "General Healthcare Facility Pre-Triage Application\n"
@@ -95,40 +111,40 @@ namespace seneca {
 		} while (selection);
 	}
 
-	const Time PreTriage::getWaitTime(const Patient& patient) { //SUSPICIOUS BUG
+	//Query that gets the estimated wait time for a type of patient
+	const Time PreTriage::getWaitTime(const Patient& patient) {		//SUSPICIOUS BUG
 		int matchedType{};
 		Time totalEstimated;
-		//Current number of patients in line minus 1 for the new patient being added
-		//Seems to work ms56 " -1"
-		//But not for ms55 "+ 1"
-		for (int i = 0; i < m_noOfPatients; i++) {
+
+		for (int i = 0; i < m_noOfPatients; i++) { //m_patients is perhaps not right here
 			if (m_lineup[i]->type() == patient.type()) {
 				matchedType++;
 			}
 		}
 		if (patient.type() == 'C') {
-			totalEstimated = m_averageContagionWait * matchedType + m_averageContagionWait; //Take into account the extra patient beign registered
+			totalEstimated = m_averageContagionWait * matchedType + m_averageContagionWait;		//Not sure why these work
 		}
 		else {
-			totalEstimated = m_averageTriageWait * matchedType - m_averageTriageWait; //I don't know why
+			totalEstimated = m_averageTriageWait * matchedType - m_averageTriageWait; 
 		}
 		return totalEstimated;
 	}
 
-	//Modifier for admittance
+	//Modifier that sets the average wait time for a type of patient
 	void PreTriage::setAverageWaitTime(const Patient& patient) { //HIGH PRIORITY BUG
 		Time time;
+
 		if (patient.type() == 'C') { 
 			m_averageContagionWait = ((time.reset() - patient.time()) + (m_averageContagionWait * (patient.number() - 1))) / patient.number();
-			std::cout << m_averageContagionWait << "is the average wait time" << std::endl;
+			std::cout << m_averageContagionWait << "is the average wait time\n" << std::endl;
 		}
 		else {
 			m_averageTriageWait = ((time.reset() - patient.time()) + (m_averageTriageWait * (patient.number() - 1))) / patient.number();
-			std::cout << m_averageTriageWait << "is the average wait time" << std::endl;
+			std::cout << m_averageTriageWait << "is the average wait time\n" << std::endl;
 		}
 	}
 
-	//Helper for admittance
+	//Helper function that finds the first patient in line of a specified type
 	int PreTriage::indexOfFirstInLine(char type) const {
 		int index = -1;
 		int flag = 0;
@@ -141,6 +157,7 @@ namespace seneca {
 		}
 		return index;
 	}
+	//Writes data upon exiting the program
 	void PreTriage::save() {
 		int contagionType{};
 		int triageType{};
@@ -160,6 +177,8 @@ namespace seneca {
 		}
 		std::cout << contagionType << " Contagion Tests and " << triageType << " Triage records were saved!" << std::endl;
 	}
+
+	//Creates a sub menu to register a new patient
 	void PreTriage::reg() {
 		int selection;
 		const char* title = "Select Type of Registration:\n1- Contagion Test\n2- Triage";
@@ -172,16 +191,7 @@ namespace seneca {
 				std::cout << "Line up full!" << std::endl;
 			}
 			else {
-				m_lineup[m_noOfPatients] = new TestPatient();
-				m_lineup[m_noOfPatients]->setArrivalTime();
-				std::cout << "Please enter patient information: " << std::endl;
-				std::cin >> *m_lineup[m_noOfPatients];
-				std::cout << std::endl;
-				std::cout << "******************************************" << std::endl;
-				std::cout << *m_lineup[m_noOfPatients];
-				std::cout << "Estimated Wait Time: " << getWaitTime(*m_lineup[m_noOfPatients]) << std::endl;
-				std::cout << "******************************************" << std::endl;
-				m_noOfPatients++;
+				printReg('C');
 			}
 			std::cout << std::endl;
 			break;
@@ -190,16 +200,7 @@ namespace seneca {
 				std::cout << "Line up full!" << std::endl;
 			}
 			else {
-				m_lineup[m_noOfPatients] = new TriagePatient();
-				m_lineup[m_noOfPatients]->setArrivalTime();
-				std::cout << "Please enter patient information: " << std::endl;
-				std::cin >> *m_lineup[m_noOfPatients];
-				std::cout << std::endl;
-				std::cout << "******************************************" << std::endl;
-				std::cout << *m_lineup[m_noOfPatients];
-				std::cout << "Estimated Wait Time: " << getWaitTime(*m_lineup[m_noOfPatients]) << std::endl;
-				std::cout << "******************************************" << std::endl;
-				m_noOfPatients++;
+				printReg('T');
 			}
 			std::cout << std::endl;
 			break;
@@ -208,13 +209,32 @@ namespace seneca {
 		default:
 			break;
 		}
-
 	}
+
+	//Prints the registration information (supports the reg function)
+	void PreTriage::printReg(char type) {
+		if (type == 'C') {
+			m_lineup[m_noOfPatients] = new TestPatient();
+		}
+		else {
+			m_lineup[m_noOfPatients] = new TriagePatient();
+		}
+		m_lineup[m_noOfPatients]->setArrivalTime();
+		std::cout << "Please enter patient information: " << std::endl;
+		std::cin >> *m_lineup[m_noOfPatients];
+		std::cout << std::endl;
+		std::cout << "******************************************" << std::endl;
+		std::cout << *m_lineup[m_noOfPatients];
+		std::cout << "Estimated Wait Time: " << getWaitTime(*m_lineup[m_noOfPatients]) << std::endl;
+		std::cout << "******************************************" << std::endl;
+		m_noOfPatients++;
+	}
+
+	//Creates a sub menu to admit a patient in line
 	void PreTriage::admit() {
 		int selection;
 		const char* title = "Select Type of Admittance:\n1- Contagion Test\n2- Triage";
 		Menu menu(title, 1);
-		Time time;
 		menu >> selection;
 		switch (selection) {
 		case 1: 
@@ -222,14 +242,7 @@ namespace seneca {
 				std::cout << "Lineup is empty!\n";
 			} 
 			else {			
-				std::cout << std::endl;
-				std::cout << "******************************************" << std::endl;
-				std::cout << "Call time [" << time.reset() << "]" << std::endl; 
-				std::cout << "Calling for " << *m_lineup[indexOfFirstInLine('C')]; 
-				std::cout << "******************************************" << std::endl;
-				std::cout << std::endl;
-				setAverageWaitTime(*m_lineup[indexOfFirstInLine('C')]);
-				U.removeDynamicElement(m_lineup, indexOfFirstInLine('C'), m_noOfPatients);
+				printAdmit('C');
 			}
 			break;
 		case 2:
@@ -237,14 +250,7 @@ namespace seneca {
 				std::cout << "Lineup is empty!\n";
 			}
 			else {
-				std::cout << std::endl;
-				std::cout << "******************************************" << std::endl;
-				std::cout << "Call time [" << time.reset() << "]" << std::endl;
-				std::cout << "Calling for " << *m_lineup[indexOfFirstInLine('T')];
-				std::cout << "******************************************" << std::endl;
-				std::cout << std::endl;
-				setAverageWaitTime(*m_lineup[indexOfFirstInLine('T')]);
-				U.removeDynamicElement(m_lineup, indexOfFirstInLine('T'), m_noOfPatients);
+				printAdmit('T');
 			}
 			break;
 		case 0:
@@ -252,11 +258,24 @@ namespace seneca {
 		default:
 			break;
 		}
-
-
 	}
+
+	//Prints admission information (supports the admit function)
+	void PreTriage::printAdmit(char type) {
+		Time time;
+
+		std::cout << std::endl;
+		std::cout << "******************************************" << std::endl;
+		std::cout << "Call time [" << time.reset() << "]" << std::endl;
+		std::cout << "Calling for " << *m_lineup[indexOfFirstInLine(type)];
+		std::cout << "******************************************" << std::endl;
+		std::cout << std::endl;
+		setAverageWaitTime(*m_lineup[indexOfFirstInLine(type)]);
+		U.removeDynamicElement(m_lineup, indexOfFirstInLine(type), m_noOfPatients);
+	}
+
+	//Creates a sub menu to display a report of patients in line
 	void PreTriage::lineup() {
-		int counter = 1;
 		int selection;
 		const char* title = "Select The Lineup\n"
 			"1- Contagion Test\n2- Triage";
@@ -264,41 +283,11 @@ namespace seneca {
 			menu >> selection;
 			switch (selection) {
 			case 1: {
-				std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n"
-					"-------------------------------------------------------------------------------" << std::endl;
-				for (int i = 0; i < m_noOfPatients; i++) {
-					if (m_lineup[i]->type() == 'C') {
-						std::cout << counter;
-						counter++;
-						std::cout.width(5);
-						std::cout.fill(' ');
-						std::cout << "- ";
-						std::clog << *m_lineup[i] << std::endl;
-					}
-				}
-				if (counter == 1) {
-					std::cout << "Line up is empty!\n";
-				}
-				std::cout << "-------------------------------------------------------------------------------" << std::endl;
+				printLineup('C');
 				break;
 			}
 			case 2:
-				std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n"
-					"-------------------------------------------------------------------------------" << std::endl;
-				for (int i = 0; i < m_noOfPatients; i++) {
-					if (m_lineup[i]->type() == 'T') {
-						std::cout << counter;
-						counter++;
-						std::cout.width(5);
-						std::cout.fill(' ');
-						std::cout << "- ";
-						std::clog << *m_lineup[i] << std::endl;
-					}
-				}
-				if (counter == 1) {
-					std::cout << "Line up is empty!\n";
-				}
-				std::cout << "-------------------------------------------------------------------------------" << std::endl;
+				printLineup('T');
 				break;
 			case 0:
 				break;
@@ -306,4 +295,26 @@ namespace seneca {
 				break;
 			}
 	}	
+
+	//Prints the report of patients currently in line (supports the lineup function)
+	void PreTriage::printLineup(char type) {
+		int counter = 1;
+
+		std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n"
+			"-------------------------------------------------------------------------------" << std::endl;
+		for (int i = 0; i < m_noOfPatients; i++) {
+			if (m_lineup[i]->type() == type) {
+				std::cout << counter;
+				counter++;
+				std::cout.width(5);
+				std::cout.fill(' ');
+				std::cout << "- ";
+				std::clog << *m_lineup[i] << std::endl;
+			}
+		}
+		if (counter == 1) {
+			std::cout << "Line up is empty!\n";
+		}
+		std::cout << "-------------------------------------------------------------------------------" << std::endl;
+	}
 }
