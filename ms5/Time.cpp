@@ -22,7 +22,7 @@ namespace seneca {
         m_minutes = U.getTime();
         return *this;
     }
-    //Write to console function
+    //Write time in HH:MM format
     void Time::write(std::ostream& os) const {
 
         int hour = m_minutes / 60;
@@ -41,7 +41,7 @@ namespace seneca {
             os << hour << ":" << min;
         }
     }
-    //Read valid hh:mm time format
+    //Read time in HH:MM format
     void Time::read(std::istream& is) {
         int hours, minutes;
 
@@ -66,14 +66,14 @@ namespace seneca {
     Time::operator unsigned int() const {
         return m_minutes;
     }
-    //Multiplies and assigns minutes by val
+    //Multiplies and assigns current objects minutes by value passed in
     Time& Time::operator*=(int val) {
 
         m_minutes *= val;
 
         return *this;
     }
-    //Modifies current object with other object time deduction
+    //Subtracts and assigns current objects minutes by another time objects minutes
     Time& Time::operator-=(const Time& D) {
         int totalMin = m_minutes - D.m_minutes;
         if (totalMin < 0) {
@@ -82,7 +82,7 @@ namespace seneca {
         m_minutes = totalMin;
         return *this;
     }
-    //Returns a new seperate object instead
+    //Returns a seperate object after subtracting minutes
     Time Time::operator-(const Time& T) const {
         Time newTime;
         if (m_minutes >= T.m_minutes) {

@@ -20,7 +20,7 @@ namespace seneca {
 		int m_noOfPatients;
 	//Private methods:
 		//Gets the estimated wait time for a patient
-		const Time getWaitTime(const Patient& patient) const;
+		const Time getWaitTime(const Patient& patient);
 		//Adjusts the average wait time
 		void setAverageWaitTime(const Patient& patient);
 		//Finds the first patient in line of a specified type

@@ -42,7 +42,7 @@
     <ClCompile Include="PreTriage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ms53_test.cpp">
+    <ClCompile Include="ms56_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
