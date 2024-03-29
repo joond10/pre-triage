@@ -33,6 +33,8 @@ namespace seneca {
 	Menu::~Menu() {
 		delete[] m_text;
 	}
+
+	//Displays the interface of the menu
 	void Menu::display() const {
 		//If a number of tabs was passed in
 		if (m_tabs > 0) {
@@ -72,6 +74,8 @@ namespace seneca {
 			std::cout << "> ";
 		}
 	}
+
+	//Utilizes the display and insertion operator to get user's selection
 	int& Menu::operator>>(int& selection) {
 		//Display the menu and get input in one go
 		display();

@@ -35,7 +35,7 @@ namespace seneca {
 		virtual char type() const = 0;
 		//Compares the patient with a single character (type)
 		bool operator==(char rhs) const;
-		//Compares the current patient to another patient (type_
+		//Compares the current patient to another patient (type)
 		bool operator==(const Patient& otherPatient) const;
 		//Modifier that sets the patient's ticket to current time
 		void setArrivalTime();
@@ -49,7 +49,9 @@ namespace seneca {
 		//Returns the address of the patient's name
 		operator const char* () const;
 	//Overrides:
+		//Overrides base class version to write to different ostreams
 		std::ostream& write(std::ostream& ostr) const;
+		//Overrides base class version to read from different istream
 		std::istream& read(std::istream& istr);
 	};
 }

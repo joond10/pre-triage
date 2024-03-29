@@ -22,7 +22,9 @@ namespace seneca {
 		TestPatient();
 		//Returns the appropriate identifier for the type of patient (contagion)
 		char type() const;
+		//Overrides the write function and adds contagion label
 		std::ostream& write(std::ostream& ostr) const;
+		//Overrides the read function and increments the ticket number
 		std::istream& read(std::istream& istr);
 
 	};

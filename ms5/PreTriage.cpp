@@ -116,13 +116,13 @@ namespace seneca {
 		int matchedType{};
 		Time totalEstimated;
 
-		for (int i = 0; i < m_noOfPatients; i++) { //m_patients is perhaps not right here
+		for (int i = 0; i < m_noOfPatients; i++) { 
 			if (m_lineup[i]->type() == patient.type()) {
 				matchedType++;
 			}
 		}
 		if (patient.type() == 'C') {
-			totalEstimated = m_averageContagionWait * matchedType + m_averageContagionWait;		//Not sure why these work
+			totalEstimated = m_averageContagionWait * matchedType + m_averageContagionWait;		
 		}
 		else {
 			totalEstimated = m_averageTriageWait * matchedType - m_averageTriageWait; 

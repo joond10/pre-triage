@@ -20,9 +20,13 @@ namespace seneca {
 	Patient(nextTestTicket){
 		nextTestTicket++;
 	}
+
+	//Returns the appropriate identifier for the type of patient (contagion)
 	char TestPatient::type() const{
 		return 'C';
 	}
+
+	//Overrides the write function and adds contagion label
 	std::ostream& TestPatient::write(std::ostream& ostr) const {
 		if (&ostr == &std::cout) {
 			ostr << "Contagion TEST" << std::endl;
@@ -30,6 +34,8 @@ namespace seneca {
 		Patient::write(ostr);
 		return ostr;
 	}
+
+	//Overrides the read function and increments the ticket number
 	std::istream& TestPatient::read(std::istream& istr) {
 		Patient::read(istr);
 		if (&istr != &std::cin) {
