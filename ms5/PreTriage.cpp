@@ -95,34 +95,36 @@ namespace seneca {
 		} while (selection);
 	}
 
-	const Time PreTriage::getWaitTime(const Patient& patient) {
+	const Time PreTriage::getWaitTime(const Patient& patient) { //SUSPICIOUS BUG
 		int matchedType{};
 		Time totalEstimated;
-		//Current number of patiens in line plus 1 for the new patient being added
-		for (int i = 0; i < m_noOfPatients + 1; i++) {
+		//Current number of patients in line minus 1 for the new patient being added
+		//Seems to work ms56 " -1"
+		//But not for ms55 "+ 1"
+		for (int i = 0; i < m_noOfPatients; i++) {
 			if (m_lineup[i]->type() == patient.type()) {
 				matchedType++;
 			}
 		}
 		if (patient.type() == 'C') {
-			totalEstimated = m_averageContagionWait * matchedType;
+			totalEstimated = m_averageContagionWait * matchedType + m_averageContagionWait; //Take into account the extra patient beign registered
 		}
 		else {
-			totalEstimated = m_averageTriageWait * matchedType;
+			totalEstimated = m_averageTriageWait * matchedType - m_averageTriageWait; //I don't know why
 		}
 		return totalEstimated;
 	}
 
 	//Modifier for admittance
-	void PreTriage::setAverageWaitTime(const Patient& patient) {
+	void PreTriage::setAverageWaitTime(const Patient& patient) { //HIGH PRIORITY BUG
 		Time time;
 		if (patient.type() == 'C') { 
 			m_averageContagionWait = ((time.reset() - patient.time()) + (m_averageContagionWait * (patient.number() - 1))) / patient.number();
-			std::cout << m_averageContagionWait;
+			std::cout << m_averageContagionWait << "is the average wait time" << std::endl;
 		}
 		else {
 			m_averageTriageWait = ((time.reset() - patient.time()) + (m_averageTriageWait * (patient.number() - 1))) / patient.number();
-			std::cout << m_averageTriageWait;
+			std::cout << m_averageTriageWait << "is the average wait time" << std::endl;
 		}
 	}
 
