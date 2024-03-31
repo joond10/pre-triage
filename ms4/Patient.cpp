@@ -15,7 +15,7 @@ that my professor provided to complete my workshops and assignments.
 #include "Patient.h"
 namespace seneca {
 	Patient::Patient(int ticketNum) :
-		m_ticket(ticketNum), m_name(nullptr), m_ohip(0) {
+		 m_name(nullptr), m_ohip(0), m_ticket(ticketNum){
 	}
 	void Patient::setMembers(const Patient& other) {
 		if (other.m_name) {
