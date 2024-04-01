@@ -112,7 +112,7 @@ namespace seneca {
 	}
 
 	//Query that gets the estimated wait time for a type of patient
-	const Time PreTriage::getWaitTime(const Patient& patient) {		//SUSPICIOUS BUG
+	const Time PreTriage::getWaitTime(const Patient& patient) {		
 		int matchedType{};
 		Time totalEstimated;
 
@@ -122,16 +122,16 @@ namespace seneca {
 			}
 		}
 		if (patient.type() == 'C') {
-			totalEstimated = m_averageContagionWait * matchedType + m_averageContagionWait;		
+			totalEstimated = m_averageContagionWait * matchedType;		
 		}
 		else {
-			totalEstimated = m_averageTriageWait * matchedType - m_averageTriageWait; 
+			totalEstimated = m_averageTriageWait * matchedType; 
 		}
 		return totalEstimated;
 	}
 
 	//Modifier that sets the average wait time for a type of patient
-	void PreTriage::setAverageWaitTime(const Patient& patient) { //HIGH PRIORITY BUG
+	void PreTriage::setAverageWaitTime(const Patient& patient) { 
 		Time time;
 
 		if (patient.type() == 'C') { 
