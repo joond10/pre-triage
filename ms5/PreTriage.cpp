@@ -121,13 +121,9 @@ namespace seneca {
 				matchedType++;
 			}
 		}
-		if (patient.type() == 'C') {
-			totalEstimated = m_averageContagionWait * matchedType;		
-		}
-		else {
-			totalEstimated = m_averageTriageWait * matchedType; 
-		}
-		return totalEstimated;
+		//Return the total estimated wait time based on patient type
+		return totalEstimated = (patient.type() == 'C') ? m_averageContagionWait * matchedType : 
+			m_averageTriageWait * matchedType;
 	}
 
 	//Modifier that sets the average wait time for a type of patient
@@ -136,11 +132,9 @@ namespace seneca {
 
 		if (patient.type() == 'C') { 
 			m_averageContagionWait = ((time.reset() - patient.time()) + (m_averageContagionWait * (patient.number() - 1))) / patient.number();
-			std::cout << m_averageContagionWait << "is the average wait time\n" << std::endl;
 		}
 		else {
 			m_averageTriageWait = ((time.reset() - patient.time()) + (m_averageTriageWait * (patient.number() - 1))) / patient.number();
-			std::cout << m_averageTriageWait << "is the average wait time\n" << std::endl;
 		}
 	}
 
@@ -168,6 +162,7 @@ namespace seneca {
 		file << m_averageContagionWait << "," << m_averageTriageWait << std::endl;
 		for (int i = 0; i < m_noOfPatients; i++) {
 			file << *m_lineup[i] << std::endl;
+			//Counters to keep track of patient type
 			if (m_lineup[i]->type() == 'C') {
 				contagionType++;
 			}
@@ -213,6 +208,7 @@ namespace seneca {
 
 	//Prints the registration information (supports the reg function)
 	void PreTriage::printReg(char type) {
+		//Instantiate respective type of patient based at index number of patients
 		if (type == 'C') {
 			m_lineup[m_noOfPatients] = new TestPatient();
 		}
@@ -237,6 +233,7 @@ namespace seneca {
 		Menu menu(title, 1);
 		menu >> selection;
 		switch (selection) {
+		//If no index of specified type is found, line up is empty, otherwise print admission
 		case 1: 
 			if (indexOfFirstInLine('C') == -1) {
 				std::cout << "Lineup is empty!\n";
@@ -300,6 +297,7 @@ namespace seneca {
 	void PreTriage::printLineup(char type) {
 		int counter = 1;
 
+		//If no patient is found for specified type, line up is empty
 		std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n"
 			"-------------------------------------------------------------------------------" << std::endl;
 		for (int i = 0; i < m_noOfPatients; i++) {

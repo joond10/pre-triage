@@ -25,9 +25,11 @@ namespace seneca {
     //Write time in HH:MM format
     void Time::write(std::ostream& os) const {
 
+        //Get the remainder of time
         int hour = m_minutes / 60;
         int min = m_minutes % 60;
 
+        //Write time accordingly if single digit
         if (hour < 10 || min < 10) {
             os.width(2);
             os.fill('0');

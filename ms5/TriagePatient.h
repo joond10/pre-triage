@@ -31,7 +31,9 @@ namespace seneca {
 		TriagePatient& operator=(const TriagePatient&);
 		~TriagePatient();
 
+		//Overrides the write function, adds triage label and different formats
 		std::ostream& write(std::ostream& ostr) const;
+		//Overrides the read function by reading in dynamically allocated cstring for symptoms
 		std::istream& read(std::istream& istr);
 	};
 }

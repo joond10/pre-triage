@@ -30,6 +30,8 @@ namespace seneca {
 			m_name = nullptr;
 		}
 	}
+
+	//Copy assignment operator that utilizes localization function
 	Patient& Patient::operator=(const Patient& other) {
 		if (this != &other) {
 			delete[] m_name;
@@ -37,9 +39,13 @@ namespace seneca {
 		}
 		return *this;
 	}
+
+	//Copy constructor that utilizes localization function
 	Patient::Patient(const Patient& other) : m_ticket(other.m_ticket) { 
 		setMembers(other);
 	}
+
+	//Destructor
 	Patient::~Patient() {
 		delete[] m_name;
 	}

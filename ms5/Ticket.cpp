@@ -27,7 +27,6 @@ namespace seneca {
     void Ticket::resetTime() {
         m_time.reset();
     }
-    //Overrides base class version
     std::ostream& Ticket::write(std::ostream& ostr) const {
         if (&ostr != &cout) {
             ostr << m_number << "," << m_time;
@@ -37,7 +36,6 @@ namespace seneca {
         }
         return  ostr;
     }
-    //Overrides base class version
     std::istream& Ticket::read(std::istream& istr) {
         istr >> m_number;
         istr.ignore();

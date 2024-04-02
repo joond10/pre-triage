@@ -13,7 +13,6 @@ that my professor provided to complete my workshops and assignments.
 */
 #include "TestPatient.h"
 namespace seneca {
-
 	int nextTestTicket = 1;
 
 	TestPatient::TestPatient() :

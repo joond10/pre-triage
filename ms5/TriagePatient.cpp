@@ -20,10 +20,12 @@ namespace seneca {
 		nextTriageTicket++;
 		m_symptoms = nullptr;
 	}
+
+	//Returns the appropriate identifier for the type of patient (triage)
 	char TriagePatient::type() const {
 		return 'T';
 	}
-	//Localize where we dynamically allocate for symptoms
+	//Localization technique for the rule of three with symptom memory management
 	void TriagePatient::initalizeSymptoms(const TriagePatient& other) {
 		if (other.m_symptoms) {
 			m_symptoms = new char[512];
@@ -33,19 +35,27 @@ namespace seneca {
 			m_symptoms = nullptr;
 		}
 	}
+
+	//Copy constructor that also constructs base class and utilizes localization function
 	TriagePatient::TriagePatient(const TriagePatient& other) :
 	Patient(other){
 		initalizeSymptoms(other);
 	}
+
+	//Copy assignment operator that utilizes localization function
 	TriagePatient& TriagePatient::operator=(const TriagePatient& other) {
 		if (this != &other) {
 			initalizeSymptoms(other);
 		}
 		return *this;
 	}
+
+	//Destructor
 	TriagePatient::~TriagePatient() {
 		delete[] m_symptoms;
 	}
+
+	//Overrides the write function, adds triage label and different formats
 	std::ostream& TriagePatient::write(std::ostream& ostr) const {
 		//TRIAGE label
 		if (&ostr == &std::cout) {
@@ -64,6 +74,8 @@ namespace seneca {
 		}
 		return ostr;
 	}
+
+	//Overrides the read function by reading in dynamically allocated cstring for symptoms
 	std::istream& TriagePatient::read(std::istream& istr) {
 		//Local static array to hold symptoms
 		char symptoms[511 + 1];

@@ -31,7 +31,9 @@ namespace seneca {
         int number()const;
         //Sets time to system time
         void resetTime();
+        //Overrides base class version
         std::ostream& write(std::ostream& ostr)const;
+        //Overrides base class version
         std::istream& read(std::istream& istr);
     };
 }
