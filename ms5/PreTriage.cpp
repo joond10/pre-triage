@@ -28,20 +28,21 @@ namespace seneca {
 		save();
 		for (int i = 0; i < m_noOfPatients; i++) {
 			delete m_lineup[i];
+			m_lineup[i] = nullptr;
 		}
 		delete[] m_fileName;
+		m_fileName = nullptr;
 	}
 
 	//Reads data from the files provided
 	void PreTriage::load() {
-		std::ifstream file;
+		std::ifstream file(m_fileName);
 		Patient* localPatient = nullptr;
-		char localPatientType;
+		char localPatientType{};
 
 		std::cout << "Loading data..." << std::endl;
-		file.open(m_fileName);
 		//If the file creation is successful and contains data, continue reading
-		if (file) {
+		if (file.is_open()) {
 			file >> m_averageContagionWait;
 			file.ignore(1000, ',');
 			file >> m_averageTriageWait;
@@ -59,6 +60,7 @@ namespace seneca {
 				else if (localPatientType == 'T') { 
 					localPatient = new TriagePatient();
 				}
+
 				//If instantiation successful, add to our lineup and increment number in lineup
 				if (localPatient != nullptr && !file.eof()) {
 					file >> *localPatient;
@@ -68,7 +70,7 @@ namespace seneca {
 			}
 		}
 		//Depending on what we read, display appropriate information
-		if (file.peek() != EOF) {
+		if (file.peek() != EOF && m_noOfPatients) {
 			std::cout << "Warning: number of records exceeded " << MAX_PATIENTS << std::endl;
 			std::cout << m_noOfPatients << " Records imported..." << std::endl;
 		}
@@ -263,8 +265,8 @@ namespace seneca {
 
 		std::cout << std::endl;
 		std::cout << "******************************************" << std::endl;
-		std::cout << "Call time [" << time.reset() << "]" << std::endl;
-		std::cout << "Calling for " << *m_lineup[indexOfFirstInLine(type)];
+		std::cout << "Call time: [" << time.reset() << "]" << std::endl;
+		std::cout << "Calling at for " << *m_lineup[indexOfFirstInLine(type)];
 		std::cout << "******************************************" << std::endl;
 		std::cout << std::endl;
 		setAverageWaitTime(*m_lineup[indexOfFirstInLine(type)]);
@@ -274,7 +276,7 @@ namespace seneca {
 	//Creates a sub menu to display a report of patients in line
 	void PreTriage::lineup() {
 		int selection;
-		const char* title = "Select The Lineup\n"
+		const char* title = "Select The Lineup:\n"
 			"1- Contagion Test\n2- Triage";
 		Menu menu(title, 1);
 			menu >> selection;
@@ -307,6 +309,7 @@ namespace seneca {
 				std::cout.width(5);
 				std::cout.fill(' ');
 				std::cout << "- ";
+				std::cout.flush();
 				std::clog << *m_lineup[i] << std::endl;
 			}
 		}

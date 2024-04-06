@@ -26,11 +26,11 @@ that my professor provided to complete my workshops and assignments.
 #include "Utils.h"
 namespace seneca {
 	class PreTriage {
-		Time m_averageContagionWait;
-		Time m_averageTriageWait;
+		Time m_averageContagionWait{};
+		Time m_averageTriageWait{};
 		Patient* m_lineup[MAX_PATIENTS]{};
 		char* m_fileName = nullptr;
-		int m_noOfPatients;
+		int m_noOfPatients{};
 	//Private methods:
 		//Query that gets the estimated wait time for a type of patient
 		const Time getWaitTime(const Patient& patient);

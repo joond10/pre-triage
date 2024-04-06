@@ -14,6 +14,7 @@ that my professor provided to complete my workshops and assignments.
 #ifndef SENECA_IOABLE_H
 #define SENECA_IOABLE_H
 #include <iostream>
+#include <cstring>
 namespace seneca {
 	//Interface - Sets a contract with derived classes to implement these functions
 	class IOAble {
